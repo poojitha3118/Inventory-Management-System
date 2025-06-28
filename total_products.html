@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Total Products</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .back-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #0056b3;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #343a40;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    .download-button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: #218838;
+}
+  </style>
+</head>
+<body>
+<div class="header">
+    <h1>Total Products</h1>
+    <a href="/" class="back-button">← Go Back to Dashboard</a>
+  </div>{% if session.role == 'admin' %}
+  <a href="/download-excel" class="download-button">Download Excel</a>
+{% endif %}
+<div class="inputs">
+  <input type="text" id="searchInput" placeholder="Search products...">
+  <select id="categoryFilter">
+    <option value="">All Categories</option>
+    {% for cat in unique_categories %}
+      <option value="{{ cat }}">{{ cat }}</option>
+    {% endfor %}
+  </select>
+  <button class="voice-btn" onclick="startVoiceSearch()">🎤</button>
+</div>
+
+<table id="productTable">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Use By Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in products %}
+    <tr>
+      <td>{{ item['Category'] }}</td>
+      <td>{{ item['Item Name'] }}</td>
+      <td>{{ item['Quantity'] }}</td>
+      <td>{{ item['Use By Date'] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+  function startVoiceSearch() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US';
+    recognition.onresult = function (event) {
+      const speechResult = event.results[0][0].transcript;
+      document.getElementById("searchInput").value = speechResult;
+      filterRows();
+    };
+    recognition.start();
+  }
+
+  document.getElementById("searchInput").addEventListener("input", filterRows);
+  document.getElementById("categoryFilter").addEventListener("change", filterRows);
+
+  function filterRows() {
+    const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+    const selectedCategory = document.getElementById("categoryFilter").value.toLowerCase();
+    const rows = document.querySelectorAll("#productTable tbody tr");
+
+    rows.forEach(row => {
+      const category = row.cells[0].textContent.toLowerCase();
+      const product = row.cells[1].textContent.toLowerCase();
+      const matchesSearch = product.includes(searchTerm);
+      const matchesCategory = selectedCategory === "" || category === selectedCategory;
+
+      row.style.display = matchesSearch && matchesCategory ? "" : "none";
+    });
+  }
+</script>
+
+</body>
+</html>

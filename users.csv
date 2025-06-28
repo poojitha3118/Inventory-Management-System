@@ -1,0 +1,6 @@
+username,password,role
+admin,adminpass123,admin
+user,userpass123,user
+user2,user2pass123,user
+user1,user1pass,user
+admin2,admin2pass123,admin

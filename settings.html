@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 60px 20px;
+    }
+
+    .settings-container {
+      background: white;
+      padding: 30px 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    label {
+      display: block;
+      margin-top: 16px;
+      font-weight: 600;
+      color: #555;
+      font-size: 15px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    .save-button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 12px;
+      background: #007bff;
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .save-button:hover {
+      background: #0056b3;
+    }
+
+    @media (max-width: 480px) {
+      .settings-container {
+        padding: 25px 20px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      .save-button {
+        font-size: 15px;
+        padding: 10px;
+      }
+    }
+    .go-back-button {
+  display: inline-block;
+  margin: 15px 0;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.go-back-button:hover {
+  background-color: #0056b3;
+}
+
+  </style>
+</head>
+<body>
+  <div class="settings-container">
+     <a href="/" class="go-back-button">← Go Back to Dashboard</a>
+    <h2>Account Settings</h2>
+    <form method="POST" action="#">
+      <label for="username">Username</label>
+      <input type="text" id="username" value="{{ username }}" disabled />
+
+      <label for="role">Role</label>
+      <input type="text" id="role" value="{{ role }}" disabled />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="you@example.com" />
+
+      <label for="notifications">Notifications</label>
+      <select id="notifications">
+        <option value="enabled">Enabled</option>
+        <option value="disabled">Disabled</option>
+      </select>
+
+      <button class="save-button" type="submit">Save Changes</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Inventory Categories</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f5f5;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #222;
+      margin-bottom: 20px;
+      animation: fadeInDown 0.8s ease forwards;
+      opacity: 0;
+    }
+
+    .inputs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0 40px 0;
+      animation: fadeInUp 0.8s ease forwards;
+      opacity: 0;
+      animation-delay: 0.3s;
+    }
+
+    .inputs input,
+    .inputs select,
+    .inputs button {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .inputs input:focus,
+    .inputs button:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.6);
+    }
+
+    .inputs button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .inputs button:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .category-card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      width: 220px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      cursor: pointer;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease forwards;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .category-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 15px rgba(0, 123, 255, 0.3);
+      border-color: #007bff;
+    }
+
+    .category-card a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .category-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+      transition: transform 0.3s ease;
+    }
+
+    .category-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .category-title {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .low-stock-alert {
+      background-color: #ffcccc;
+      color: #a10000;
+      padding: 6px;
+      margin-top: 10px;
+      border: 1px solid #a10000;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 13px;
+      animation: pulse 2s infinite;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #888;
+      font-size: 14px;
+      animation: fadeInUp 0.8s ease forwards;
+      opacity: 0;
+      animation-delay: 0.4s;
+    }
+
+    .voice-btn {
+      padding: 8px 14px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .voice-btn:hover {
+      background-color: #0056b3;
+      transform: scale(1.1);
+    }
+
+    .go-back-button {
+      float: right;
+      margin: 15px 0;
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      animation: fadeInLeft 0.8s ease forwards;
+      opacity: 0;
+    }
+
+    .go-back-button:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 5px 2px rgba(161, 0, 0, 0.7);
+      }
+      50% {
+        box-shadow: 0 0 10px 4px rgba(161, 0, 0, 1);
+      }
+    }
+  </style>
+</head>
+<body>
+<a href="/" class="go-back-button" role="button" tabindex="0">← Go Back to Dashboard</a>
+
+  <h1>Inventory Categories</h1>
+
+  <div class="inputs">
+    <input type="text" id="searchInput" placeholder="Search Categories" aria-label="Search categories" />
+    <button class="voice-btn" onclick="startVoiceSearch()" aria-label="Start voice search">🎤</button>
+  </div>
+
+  <div class="container" id="categoryContainer">
+    {% for cat in categories %}
+    <div class="category-card" style="animation-delay: '{{ loop.index0 * 0.1 }}s';">
+      <a href="/{{ cat.name | lower }}" aria-label="View {{ cat.name }} category">
+        <img src="{{ url_for('static', filename=cat.name | lower ~ 'pic.jpg') }}" alt="{{ cat.name }}" />
+        <div class="category-title">{{ cat.name }}</div>
+      </a>
+      <p><strong>Total Quantity:</strong> {{ cat.total_qty }}</p>
+      {% if cat.total_qty < 20 %}
+      <div class="low-stock-alert" role="alert" aria-label="Low stock warning">⚠️ Low stock! Please refill.</div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <footer>
+    <p>© 2025 Inventory Find. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function startVoiceSearch() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert('Sorry, your browser does not support voice recognition.');
+        return;
+      }
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.onresult = function (event) {
+        const speechResult = event.results[0][0].transcript;
+        document.getElementById('searchInput').value = speechResult;
+        document.getElementById('searchInput').dispatchEvent(new Event('input'));
+      };
+      recognition.start();
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function () {
+      const searchTerm = this.value.toLowerCase();
+      const cards = document.querySelectorAll('.category-card');
+      cards.forEach((card) => {
+        const title = card.querySelector('.category-title').textContent.toLowerCase();
+        card.style.display = title.includes(searchTerm) ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

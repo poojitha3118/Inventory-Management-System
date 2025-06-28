@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Remaining Products</title>
+<style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .back-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #0056b3;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #343a40;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+  </style>
+<body>
+  <div class="header">
+    <h1>Remaining Products</h1>
+    <a href="/" class="back-button">← Go Back to Dashboard</a>
+  </div>
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Product</th>
+                <th>Remaining Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in remaining_products %}
+                <tr>
+  <td>{{ item['Category'] }}</td>
+  <td>{{ item['Item Name'] }}</td>
+  <td>{{ item['Quantity'] }}</td>
+</tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Usage Trends</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Add Bootstrap for styling -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    .category-btn {
+      margin: 0.5rem 0.5rem 0.5rem 0;
+    }
+    .chart-container {
+      display: none;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+      max-width: 700px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    }
+    .chart-container.active {
+      display: block;
+    }
+    .go-back-button {
+  display: inline-block;
+  margin: 15px 0;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.go-back-button:hover {
+  background-color: #0056b3;
+}
+  </style>
+</head>
+<body class="container py-4">
+  <a href="/" class="go-back-button" style="float: right;">← Go Back to Dashboard</a>
+
+  <h1 class="mb-4 text-center">Usage Trends</h1>
+
+  <!-- Category Buttons -->
+  <div class="mb-3 text-center">
+    {% for trend in trends %}
+      <button class="btn btn-outline-primary category-btn" onclick="showChart({{ loop.index0 }})">
+        {{ trend.name }}
+      </button>
+    {% endfor %}
+  </div>
+
+  <!-- Chart Containers (hidden by default) -->
+  <div>
+    {% for trend in trends %}
+      <div id="chart-container-{{ loop.index0 }}" class="chart-container">
+        <h4 class="text-center mb-3">{{ trend.name }}</h4>
+        <canvas id="chart-{{ loop.index0 }}" width="700" height="400"></canvas>
+      </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    const trends = {{ trends | tojson }};
+    let chartObjects = [];
+
+    // Draw all charts but keep them hidden initially
+    trends.forEach((trend, index) => {
+      const ctx = document.getElementById(`chart-${index}`).getContext('2d');
+      const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: trend.labels,
+          datasets: [{
+            label: trend.name,
+            data: trend.values,
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+      chartObjects.push(chart);
+    });
+
+    // Show only the selected chart
+    function showChart(idx) {
+      trends.forEach((_, i) => {
+        const container = document.getElementById(`chart-container-${i}`);
+        if (i === idx) {
+          container.classList.add('active');
+        } else {
+          container.classList.remove('active');
+        }
+      });
+    }
+
+    // Optionally, show the first chart on load
+    if (trends.length > 0) {
+      showChart(0);
+    }
+  </script>
+</body>
+</html>
