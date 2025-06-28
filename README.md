@@ -14,8 +14,7 @@ This project is a simple E-commerce Product Recommendation System built using Py
 
 📂 Project Structure
 csharp
-Copy
-Edit
+
 ├── app.py                  # Main application file
 ├── requirements.txt        # Python dependencies
 ├── data/
